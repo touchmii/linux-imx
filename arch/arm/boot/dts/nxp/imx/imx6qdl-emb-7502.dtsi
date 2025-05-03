@@ -29,12 +29,12 @@
 		fsl,dcm_always_high;
 		fsl,dc_valid;
 		fsl,usb_valid;
-		status = "okay";
+		status = "disabled";
 	};
 
 	memory: memory@10000000 {
 		device_type = "memory";
-		reg = <0x10000000 0x40000000>;
+		reg = <0x10000000 0x80000000>;
 	};
 
 	reg_usb_otg_vbus: regulator-usb-otg-vbus {
@@ -44,7 +44,7 @@
 		regulator-max-microvolt = <5000000>;
 		gpio = <&gpio3 22 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
-		vin-supply = <&swbst_reg>;
+		vin-supply = <&reg_5v0>;
 	};
 
 	reg_usb_h1_vbus: regulator-usb-h1-vbus {
@@ -54,7 +54,7 @@
 		regulator-max-microvolt = <5000000>;
 		gpio = <&gpio1 29 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
-		vin-supply = <&swbst_reg>;
+		vin-supply = <&reg_5v0>;
 	};
 
 	reg_audio: regulator-audio {
@@ -92,7 +92,7 @@
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		enable-active-high;
-		hdmi-5v-supply = <&swbst_reg>;
+		hdmi-5v-supply = <&reg_5v0>;
     };
 
 	reg_mipi_dsi_pwr_on: mipi_dsi_pwr_on {
@@ -100,6 +100,21 @@
 		regulator-name = "mipi_dsi_pwr_on";
 		gpio = <&gpio6 14 0>;
 		enable-active-high;
+	};
+
+	// 添加固定 3.3V 电压节点
+	reg_3v3: regulator-3v3 {
+		compatible = "regulator-fixed";
+		regulator-name = "3.3V";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+	};
+
+	reg_5v0: regulator-5v0 {
+		compatible = "regulator-fixed";
+		regulator-name = "5.0V";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
 	};
 
 	gpio-keys {
@@ -151,6 +166,7 @@
 		mux-ext-port = <3>;
 		hp-det-gpio = <&gpio7 8 GPIO_ACTIVE_LOW>;
 		mic-det-gpio = <&gpio1 9 GPIO_ACTIVE_LOW>;
+		status = "disabled";
 	};
 
 	sound-hdmi {
@@ -208,7 +224,7 @@
 		default_ifmt = "RGB565";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_ipu1>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	backlight_lvds: backlight-lvds {
@@ -216,13 +232,14 @@
 		pwms = <&pwm1 0 5000000>;
 		brightness-levels = <0 4 8 16 32 64 128 255>;
 		default-brightness-level = <7>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_gpio_leds>;
+		status = "disabled";
 
 		charger-led {
 			gpios = <&gpio1 2 0>;
@@ -237,7 +254,7 @@
 		ipu_id = <0>;
 		csi_id = <0>;
 		mclk_source = <0>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	v4l2_cap_1 {
@@ -245,12 +262,12 @@
 		ipu_id = <0>;
 		csi_id = <1>;
 		mclk_source = <0>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	v4l2_out {
 		compatible = "fsl,mxc_v4l2_output";
-		status = "okay";
+		status = "disabled";
 	};
 
 	mipi_dsi_reset: reset-controller {
@@ -258,7 +275,7 @@
 		reset-gpios = <&gpio6 11 GPIO_ACTIVE_LOW>;
 		reset-delay-us = <50>;
 		#reset-cells = <0>;
-		status = "okay";
+		status = "disabled";
 	};
 };
 
@@ -267,6 +284,7 @@
 	data-shift = <12>; /* Lines 19:12 used */
 	hsync-active = <1>;
 	vsync-active = <1>;
+	status = "disabled";
 };
 
 &ipu1_csi0_mux_from_parallel_sensor {
@@ -278,10 +296,11 @@
 &ipu1_csi0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ipu1_csi0>;
+	status = "disabled";
 };
 
 &mipi_csi {
-	status = "okay";
+	status = "disabled";
 
 	ipu_id = <0>;
 	csi_id = <1>;
@@ -306,7 +325,7 @@
         lcd_panel = "TRULY-WVGA";
         disp-power-on-supply = <&reg_mipi_dsi_pwr_on>;
 	resets = <&mipi_dsi_reset>;
-        status = "okay";
+	status = "disabled";
 };
 
 &audmux {
@@ -331,14 +350,14 @@
 &dcic2 {
 	dcic_id = <1>;
 	dcic_mux = "dcic-lvds1";
-	status = "okay";
+	status = "disabled";
 };
 
 &ecspi1 {
 	cs-gpios = <&gpio4 9 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi1>;
-	status = "okay";
+	status = "disabled";
 
 	flash: flash@0 {
 		#address-cells = <1>;
@@ -404,7 +423,7 @@
 	pinctrl-1 = <&pinctrl_i2c1_gpio>;
 	scl-gpios = <&gpio5 27 GPIO_ACTIVE_HIGH>;
 	sda-gpios = <&gpio5 26 GPIO_ACTIVE_HIGH>;
-	status = "okay";
+	status = "disabled";
 
 	codec: wm8962@1a {
 		compatible = "wlf,wm8962";
@@ -490,7 +509,7 @@
 	pinctrl-1 = <&pinctrl_i2c2_gpio>;
 	scl-gpios = <&gpio4 12 GPIO_ACTIVE_HIGH>;
 	sda-gpios = <&gpio4 13 GPIO_ACTIVE_HIGH>;
-	status = "okay";
+	status = "disabled";
 
 	touchscreen@4 {
 		compatible = "eeti,egalax_ts";
@@ -553,6 +572,7 @@
 	pmic: pmic@8 {
 		compatible = "fsl,pfuze100";
 		reg = <0x08>;
+		status = "disabled";
 
 		regulators {
 			sw1a_reg: sw1ab {
@@ -664,7 +684,7 @@
 	pinctrl-1 = <&pinctrl_i2c3_gpio>;
 	scl-gpios = <&gpio1 3 GPIO_ACTIVE_HIGH>;
 	sda-gpios = <&gpio1 6 GPIO_ACTIVE_HIGH>;
-	status = "okay";
+	status = "disabled";
 
 	egalax_ts@4 {
 		compatible = "eeti,egalax_ts";
@@ -741,22 +761,21 @@
 
 		pinctrl_enet: enetgrp {
 			fsl,pins = <
-				MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0x1b0b0
-				MX6QDL_PAD_ENET_MDC__ENET_MDC		0x1b0b0
-				MX6QDL_PAD_RGMII_TXC__RGMII_TXC		0x1b030
-				MX6QDL_PAD_RGMII_TD0__RGMII_TD0		0x1b030
-				MX6QDL_PAD_RGMII_TD1__RGMII_TD1		0x1b030
-				MX6QDL_PAD_RGMII_TD2__RGMII_TD2		0x1b030
-				MX6QDL_PAD_RGMII_TD3__RGMII_TD3		0x1b030
-				MX6QDL_PAD_RGMII_TX_CTL__RGMII_TX_CTL	0x1b030
-				MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK	0x1b0b0
-				MX6QDL_PAD_RGMII_RXC__RGMII_RXC		0x1b030
-				MX6QDL_PAD_RGMII_RD0__RGMII_RD0		0x1b030
-				MX6QDL_PAD_RGMII_RD1__RGMII_RD1		0x1b030
-				MX6QDL_PAD_RGMII_RD2__RGMII_RD2		0x1b030
-				MX6QDL_PAD_RGMII_RD3__RGMII_RD3		0x1b030
-				MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL	0x1b030
-				MX6QDL_PAD_GPIO_16__ENET_REF_CLK	0x4001b0a8
+				MX6QDL_PAD_ENET_MDIO__ENET_MDIO		0xa0b1
+				MX6QDL_PAD_ENET_MDC__ENET_MDC		0xa0b1
+				MX6QDL_PAD_RGMII_TXC__RGMII_TXC		0xa030
+				MX6QDL_PAD_RGMII_TD0__RGMII_TD0		0xa030
+				MX6QDL_PAD_RGMII_TD1__RGMII_TD1		0xa030
+				MX6QDL_PAD_RGMII_TD2__RGMII_TD2		0xa030
+				MX6QDL_PAD_RGMII_TD3__RGMII_TD3		0xa030
+				MX6QDL_PAD_RGMII_TX_CTL__RGMII_TX_CTL	0xa030
+				MX6QDL_PAD_ENET_REF_CLK__ENET_TX_CLK	0xa0b1
+				MX6QDL_PAD_RGMII_RXC__RGMII_RXC		0xa030
+				MX6QDL_PAD_RGMII_RD0__RGMII_RD0		0xa030
+				MX6QDL_PAD_RGMII_RD1__RGMII_RD1		0xa030
+				MX6QDL_PAD_RGMII_RD2__RGMII_RD2		0xa030
+				MX6QDL_PAD_RGMII_RD3__RGMII_RD3		0xa030
+				MX6QDL_PAD_RGMII_RX_CTL__RGMII_RX_CTL	0xa030
 			>;
 		};
 
@@ -969,8 +988,8 @@
 
 		pinctrl_uart1: uart1grp {
 			fsl,pins = <
-				MX6QDL_PAD_CSI0_DAT10__UART1_TX_DATA	0x1b0b1
-				MX6QDL_PAD_CSI0_DAT11__UART1_RX_DATA	0x1b0b1
+				MX6QDL_PAD_SD3_DAT7__UART1_TX_DATA	    0x1b0b1
+				MX6QDL_PAD_SD3_DAT6__UART1_RX_DATA	    0x1b0b1
 			>;
 		};
 
@@ -1010,6 +1029,7 @@
 				MX6QDL_PAD_NANDF_D5__SD2_DATA5		0x17059
 				MX6QDL_PAD_NANDF_D6__SD2_DATA6		0x17059
 				MX6QDL_PAD_NANDF_D7__SD2_DATA7		0x17059
+				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01		0x1b0b0
 			>;
 		};
 
@@ -1021,10 +1041,34 @@
 				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x17059
 				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x17059
 				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
-				MX6QDL_PAD_SD3_DAT4__SD3_DATA4		0x17059
-				MX6QDL_PAD_SD3_DAT5__SD3_DATA5		0x17059
-				MX6QDL_PAD_SD3_DAT6__SD3_DATA6		0x17059
-				MX6QDL_PAD_SD3_DAT7__SD3_DATA7		0x17059
+				MX6QDL_PAD_SD3_DAT5__GPIO7_IO00     0x1b0b0 /* CD */
+				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01     0x1b0b0 /* WP */
+			>;
+		};
+
+		pinctrl_usdhc3_100mhz: usdhc3grp100mhz {
+			fsl,pins = <
+				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170b9
+				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x170b9
+				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x170b9
+				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x170b9
+				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x170b9
+				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x170b9
+				MX6QDL_PAD_SD3_DAT5__GPIO7_IO00		0x170b9 /* CD */
+				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01     0x1b0b0
+			>;
+		};
+	
+		pinctrl_usdhc3_200mhz: usdhc3grp200mhz {
+			fsl,pins = <
+				MX6QDL_PAD_SD3_CMD__SD3_CMD		0x170f9
+				MX6QDL_PAD_SD3_CLK__SD3_CLK		0x100f9
+				MX6QDL_PAD_SD3_DAT0__SD3_DATA0		0x170f9
+				MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x170f9
+				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x170f9
+				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x170f9
+				MX6QDL_PAD_SD3_DAT5__GPIO7_IO00		0x170f9 /* CD */
+				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01     0x1b0b0
 			>;
 		};
 
@@ -1060,7 +1104,7 @@
 };
 
 &ldb {
-	status = "okay";
+	status = "disabled";
 
 	lvds-channel@0 {
 		fsl,data-mapping = "spwg";
@@ -1111,6 +1155,7 @@
 	pinctrl-0 = <&pinctrl_pcie>;
 	reset-gpio = <&gpio7 12 GPIO_ACTIVE_LOW>;
 	vpcie-supply = <&reg_pcie>;
+	status = "okay";
 };
 
 &pwm1 {
@@ -1121,23 +1166,23 @@
 };
 
 &reg_arm {
-       vin-supply = <&sw1a_reg>;
+	vin-supply = <&reg_3v3>;
 };
 
 &reg_pu {
-       vin-supply = <&sw1c_reg>;
+	vin-supply = <&reg_3v3>;
 };
 
 &reg_soc {
-       vin-supply = <&sw1c_reg>;
+	vin-supply = <&reg_3v3>;
 };
 
 &reg_vdd1p1 {
-	vin-supply = <&vgen5_reg>;
+	vin-supply = <&reg_3v3>;
 };
 
 &reg_vdd2p5 {
-	vin-supply = <&vgen5_reg>;
+	vin-supply = <&reg_3v3>;
 };
 
 &snvs_poweroff {
@@ -1152,7 +1197,7 @@
 				 <&clks IMX6QDL_CLK_PLL4>,
 				 <&clks IMX6QDL_CLK_PLL4_AUDIO_DIV>;
 	assigned-clock-rates = <737280000>, <0>, <0>;
-	status = "okay";
+	status = "disabled";
 };
 
 &uart1 {
@@ -1180,15 +1225,20 @@
 	bus-width = <8>;
 	cd-gpios = <&gpio2 2 GPIO_ACTIVE_LOW>;
 	wp-gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
-	status = "okay";
+	status = "disabled";
 };
 
 &usdhc3 {
 	pinctrl-names = "default";
+	// pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc3>;
-	bus-width = <8>;
-	cd-gpios = <&gpio2 0 GPIO_ACTIVE_LOW>;
-	wp-gpios = <&gpio2 1 GPIO_ACTIVE_HIGH>;
+	// pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+	// pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
+	bus-width = <4>;
+	cd-gpios = <&gpio7 0 GPIO_ACTIVE_LOW>;
+	wp-gpios = <&gpio7 1 GPIO_ACTIVE_HIGH>;
+	vmmc-supply = <&reg_3v3>;
+	no-1-8-v;
 	status = "okay";
 };
 
@@ -1203,12 +1253,12 @@
 };
 
 &wdog1 {
-	status = "disabled";
+	status = "okay";
 };
 
 &wdog2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_wdog>;
 	fsl,ext-reset-output;
-	status = "okay";
+	status = "disable";
 };
