@@ -29,26 +29,31 @@
 	};
 };
 
-// &mxcfb1 {
-// 	status = "okay";
-// };
+&mxcfb1 {
+	status = "okay";
+};
 
-// &mxcfb2 {
-// 	status = "okay";
-// };
+&mxcfb2 {
+	status = "okay";
+};
 
-// &mxcfb3 {
-// 	status = "okay";
-// };
+&mxcfb3 {
+	status = "okay";
+};
 
-// &mxcfb4 {
-// 	status = "okay";
-// };
+&mxcfb4 {
+	status = "okay";
+};
+
 &can1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_flexcan1>;
 	status = "okay";
 };
 
 &can2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_flexcan2>;
 	status = "okay";
 };
 
@@ -59,4 +64,10 @@
 &ipu1_csi1_from_mipi_vc1 {
 	clock-lanes = <0>;
 	data-lanes = <1 2>;
+};
+
+&hdmi_video {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_hdmi_hdcp>;
+	fsl,hdcp;
 };

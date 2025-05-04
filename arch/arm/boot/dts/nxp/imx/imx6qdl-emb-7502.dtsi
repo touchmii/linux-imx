@@ -413,6 +413,7 @@
 	fsl,phy_reg_vlev = <0x294>;
 	fsl,phy_reg_cksymtx = <0x800d>;
 /*	HDMI-supply = <&reg_hdmi>; */
+	HDMI-supply = <&reg_hdmi>;
 	status = "okay";
 };
 
@@ -1055,7 +1056,7 @@
 				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x170b9
 				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x170b9
 				MX6QDL_PAD_SD3_DAT5__GPIO7_IO00		0x170b9 /* CD */
-				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01     0x1b0b0
+				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01     0x170b9 /* WP */
 			>;
 		};
 	
@@ -1068,7 +1069,7 @@
 				MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x170f9
 				MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x170f9
 				MX6QDL_PAD_SD3_DAT5__GPIO7_IO00		0x170f9 /* CD */
-				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01     0x1b0b0
+				MX6QDL_PAD_SD3_DAT4__GPIO7_IO01     0x170f9 /* WP */
 			>;
 		};
 
@@ -1092,6 +1093,20 @@
 				MX6QDL_PAD_GPIO_1__WDOG2_B		0x1b0b0
 			>;
 		};
+
+		pinctrl_flexcan1: flexcan1grp {
+			fsl,pins = <
+				MX6QDL_PAD_GPIO_7__FLEXCAN1_TX		0x1b0b0
+				MX6QDL_PAD_GPIO_8__FLEXCAN1_RX		0x1b0b0
+			>;
+		};
+
+		pinctrl_flexcan2: flexcan2grp { 
+			fsl,pins = <
+				MX6QDL_PAD_KEY_COL4__FLEXCAN2_TX	0x1B0B0
+				MX6QDL_PAD_KEY_ROW4__FLEXCAN2_RX	0x1B0B0
+			>;
+		};	
 	};
 
 	gpio_leds {
@@ -1230,10 +1245,10 @@
 
 &usdhc3 {
 	pinctrl-names = "default";
-	// pinctrl-names = "default", "state_100mhz", "state_200mhz";
+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
 	pinctrl-0 = <&pinctrl_usdhc3>;
-	// pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-	// pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
+	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
 	bus-width = <4>;
 	cd-gpios = <&gpio7 0 GPIO_ACTIVE_LOW>;
 	wp-gpios = <&gpio7 1 GPIO_ACTIVE_HIGH>;
