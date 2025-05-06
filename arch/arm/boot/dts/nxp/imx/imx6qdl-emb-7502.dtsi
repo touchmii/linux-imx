@@ -357,7 +357,7 @@
 	cs-gpios = <&gpio4 9 GPIO_ACTIVE_LOW>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_ecspi1>;
-	status = "disabled";
+	status = "okay";
 
 	flash: flash@0 {
 		#address-cells = <1>;
@@ -424,9 +424,10 @@
 	pinctrl-1 = <&pinctrl_i2c1_gpio>;
 	scl-gpios = <&gpio5 27 GPIO_ACTIVE_HIGH>;
 	sda-gpios = <&gpio5 26 GPIO_ACTIVE_HIGH>;
-	status = "disabled";
+	status = "okay";
 
 	codec: wm8962@1a {
+		status = "disabled";
 		compatible = "wlf,wm8962";
 		reg = <0x1a>;
 		clocks = <&clks IMX6QDL_CLK_CKO>;
@@ -449,6 +450,7 @@
 	};
 
 	accelerometer@1c {
+		status = "disabled";
 		compatible = "fsl,mma8451";
 		reg = <0x1c>;
 		pinctrl-names = "default";
@@ -486,6 +488,7 @@
 	};
 #endif
 	ov564x: ov564x@3c {
+		status = "disabled";
 		compatible = "ovti,ov564x";
 		reg = <0x3c>;
 		pinctrl-names = "default";
@@ -510,9 +513,19 @@
 	pinctrl-1 = <&pinctrl_i2c2_gpio>;
 	scl-gpios = <&gpio4 12 GPIO_ACTIVE_HIGH>;
 	sda-gpios = <&gpio4 13 GPIO_ACTIVE_HIGH>;
-	status = "disabled";
+	status = "okay";
+
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	rtc@51 {
+		compatible = "nxp,pcf8563";
+		reg = <0x51>;
+		#clock-cells = <0>;
+	};
 
 	touchscreen@4 {
+		status = "disabled";
 		compatible = "eeti,egalax_ts";
 		reg = <0x04>;
 		pinctrl-names = "default";
@@ -523,6 +536,7 @@
 	};
 
 	max11801@48 {
+		status = "disabled";
 		compatible = "maxim,max11801";
 		reg = <0x48>;
 		interrupt-parent = <&gpio3>;
@@ -556,6 +570,7 @@
 #endif
 
 	ov564x_mipi: ov564x_mipi@3c { /* i2c2 driver */
+		status = "disabled";
 		compatible = "ovti,ov564x_mipi";
 		reg = <0x3c>;
 		clocks = <&clks IMX6QDL_CLK_CKO>;
@@ -685,9 +700,10 @@
 	pinctrl-1 = <&pinctrl_i2c3_gpio>;
 	scl-gpios = <&gpio1 3 GPIO_ACTIVE_HIGH>;
 	sda-gpios = <&gpio1 6 GPIO_ACTIVE_HIGH>;
-	status = "disabled";
+	status = "okay";
 
 	egalax_ts@4 {
+		status = "disabled";
 		compatible = "eeti,egalax_ts";
 		reg = <0x04>;
 		interrupt-parent = <&gpio6>;
@@ -696,6 +712,7 @@
 	};
 
 	magnetometer@e {
+		status = "disabled";
 		compatible = "fsl,mag3110";
 		reg = <0x0e>;
 		pinctrl-names = "default";
@@ -707,6 +724,7 @@
 	};
 
 	light-sensor@44 {
+		status = "disabled";
 		compatible = "isil,isl29023";
 		reg = <0x44>;
 		rext = <499>;
@@ -744,19 +762,19 @@
 
 		pinctrl_audmux: audmuxgrp {
 			fsl,pins = <
-				MX6QDL_PAD_CSI0_DAT7__AUD3_RXD		0x130b0
-				MX6QDL_PAD_CSI0_DAT4__AUD3_TXC		0x130b0
-				MX6QDL_PAD_CSI0_DAT5__AUD3_TXD		0x110b0
-				MX6QDL_PAD_CSI0_DAT6__AUD3_TXFS		0x130b0
+				MX6QDL_PAD_SD2_DAT1__AUD4_TXFS		0x130b0
+				MX6QDL_PAD_SD2_DAT2__AUD4_TXD 		0x130b0
+				MX6QDL_PAD_SD2_DAT0__AUD4_RXD 		0x110b0
+				MX6QDL_PAD_SD2_DAT3__AUD4_TXC		0x130b0
 			>;
 		};
 
 		pinctrl_ecspi1: ecspi1grp {
 			fsl,pins = <
-				MX6QDL_PAD_KEY_COL1__ECSPI1_MISO	0x100b1
-				MX6QDL_PAD_KEY_ROW0__ECSPI1_MOSI	0x100b1
-				MX6QDL_PAD_KEY_COL0__ECSPI1_SCLK	0x100b1
-				MX6QDL_PAD_KEY_ROW1__GPIO4_IO09		0x1b0b0
+				MX6QDL_PAD_EIM_D16__ECSPI1_SCLK	0x100b1
+				MX6QDL_PAD_EIM_D17__ECSPI1_MISO	0x100b1
+				MX6QDL_PAD_EIM_D18__ECSPI1_MOSI	0x100b1
+				MX6QDL_PAD_EIM_D19__GPIO3_IO19 	0x1b0b0
 			>;
 		};
 
